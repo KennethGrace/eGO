@@ -9,6 +9,6 @@ import (
 func main() {
 	fmt.Println("Hello World!")
 	game := sample.NewGame()
-	e := engine.NewEngine("GAME", 60,30, false, game)
+	e := engine.NewEngine("GAME", 640, 360, false, game)
 	e.Run()
 }

@@ -10,11 +10,11 @@ const (
 )
 
 type engine struct {
-	fps int
-	ups int
-	win *Window
+	fps   int
+	ups   int
+	win   *Window
 	timer *time.Timer
-	game Logic
+	game  Logic
 }
 
 func NewEngine(title string, width, height int, vsync bool, game Logic) *engine {
@@ -23,7 +23,7 @@ func NewEngine(title string, width, height int, vsync bool, game Logic) *engine 
 	return e
 }
 
-func (e engine) Run() {
+func (e *engine) Run() {
 	if err := e.init(); err != nil {
 		panic(err)
 	}
@@ -31,14 +31,18 @@ func (e engine) Run() {
 	e.cleanup()
 }
 
-func (e engine) init() error {
+func (e *engine) init() error {
 	if err := e.win.init(); err != nil {
 		return err
 	}
+	if err := e.game.Init(*e.win); err != nil {
+		return nil
+	}
+
 	return nil
 }
 
-func (e engine) loop() {
+func (e *engine) loop() {
 	var elapsedTime float64
 	var accumulator float64 = 0
 	interval := float64(1 / e.ups)
@@ -47,7 +51,7 @@ func (e engine) loop() {
 		elapsedTime = getElapsedTime()
 		accumulator += elapsedTime
 		e.input()
-		for ;accumulator >= interval; accumulator -= interval {
+		for ; accumulator >= interval; accumulator -= interval {
 			e.update(interval)
 		}
 		e.render()
@@ -57,22 +61,22 @@ func (e engine) loop() {
 	}
 }
 
-func (e engine) sync() {
+func (e *engine) sync() {
 
 }
 
-func (e engine) input() {
+func (e *engine) input() {
+	e.game.Input(*e.win)
+}
+
+func (e *engine) update(interval float64) {
+	e.game.Update(interval)
+}
+
+func (e *engine) render() {
 
 }
 
-func (e engine) update(interval float64) {
-
-}
-
-func (e engine) render() {
-
-}
-
-func (e engine) cleanup() {
+func (e *engine) cleanup() {
 
 }

@@ -10,8 +10,8 @@ func NewGame() *game {
 	return &game{&engine.Renderer{}}
 }
 
-func (g game) Init(engine.Window) error {
-	if err := g.renderer.Init(); err != nil {
+func (g game) Init(window engine.Window) error {
+	if err := g.renderer.Init(window); err != nil {
 		return err
 	}
 	return nil
@@ -21,7 +21,7 @@ func (g game) Input(window engine.Window) {
 
 }
 
-func (g game) Update(interval float32) {
+func (g game) Update(interval float64) {
 
 }
 
